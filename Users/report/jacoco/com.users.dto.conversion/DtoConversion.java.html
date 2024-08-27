@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DtoConversion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Users</a> &gt; <a href="index.source.html" class="el_package">com.users.dto.conversion</a> &gt; <span class="el_source">DtoConversion.java</span></div><h1>DtoConversion.java</h1><pre class="source lang-java linenums">package com.users.dto.conversion;
+
+import com.users.entities.Address;
+import com.users.entities.User;
+import com.users.entities.UserRole;
+import com.users.indto.AddressRequest;
+import com.users.indto.UpdateUserRequest;
+import com.users.indto.UserRequest;
+import com.users.outdto.AddressResponse;
+import com.users.outdto.UpdateUserResponse;
+import com.users.outdto.UserResponse;
+
+import java.math.BigDecimal;
+
+public final class DtoConversion {
+
+<span class="nc" id="L17">  private DtoConversion() {</span>
+<span class="nc" id="L18">    throw new UnsupportedOperationException(&quot;Utility class&quot;);</span>
+  }
+
+  public static User convertUserRequestToUser(UserRequest userRequest) {
+<span class="fc" id="L22">    User user = new User();</span>
+<span class="fc" id="L23">    user.setFirstName(userRequest.getFirstName());</span>
+<span class="fc" id="L24">    user.setLastName(userRequest.getLastName());</span>
+<span class="fc" id="L25">    user.setEmail(userRequest.getEmail());</span>
+<span class="fc" id="L26">    user.setPhoneNumber(userRequest.getPhoneNumber());</span>
+<span class="fc" id="L27">    user.setUserRole(userRequest.getUserRole());</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">    if (user.getUserRole() == UserRole.CUSTOMER) {</span>
+<span class="fc" id="L29">      user.setWalletBalance(BigDecimal.valueOf(1000));</span>
+    }
+<span class="fc" id="L31">    return user;</span>
+  }
+
+  public static UserResponse convertUserToUserResponse(User user) {
+<span class="fc" id="L35">    UserResponse userResponse = new UserResponse();</span>
+<span class="fc" id="L36">    userResponse.setId(user.getId());</span>
+<span class="fc" id="L37">    userResponse.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L38">    userResponse.setLastName(user.getLastName());</span>
+<span class="fc" id="L39">    userResponse.setEmail(user.getEmail());</span>
+<span class="fc" id="L40">    userResponse.setUserRole(user.getUserRole());</span>
+<span class="fc" id="L41">    userResponse.setPhoneNumber(user.getPhoneNumber());</span>
+<span class="fc" id="L42">    return userResponse;</span>
+  }
+
+  public static User convertUpdateUserRequestToUser(User existingUser, UpdateUserRequest request) {
+<span class="fc" id="L46">    existingUser.setFirstName(request.getFirstName());</span>
+<span class="fc" id="L47">    existingUser.setLastName(request.getLastName());</span>
+<span class="fc" id="L48">    existingUser.setPhoneNumber(request.getPhoneNumber());</span>
+<span class="fc" id="L49">    return existingUser;</span>
+  }
+
+  public static UpdateUserResponse convertUserToUpdateUserResponse(User user) {
+<span class="fc" id="L53">    UpdateUserResponse response = new UpdateUserResponse();</span>
+<span class="fc" id="L54">    response.setId(user.getId());</span>
+<span class="fc" id="L55">    response.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L56">    response.setLastName(user.getLastName());</span>
+<span class="fc" id="L57">    response.setPhoneNumber(user.getPhoneNumber());</span>
+<span class="fc" id="L58">    return response;</span>
+  }
+
+  public static Address convertAddressRequestToAddress(AddressRequest request) {
+<span class="fc" id="L62">    Address address = new Address();</span>
+<span class="fc" id="L63">    address.setStreet(request.getStreet());</span>
+<span class="fc" id="L64">    address.setCity(request.getCity());</span>
+<span class="fc" id="L65">    address.setState(request.getState());</span>
+<span class="fc" id="L66">    address.setUserId(request.getUserId());</span>
+<span class="fc" id="L67">    address.setPincode(request.getPincode());</span>
+<span class="fc" id="L68">    return address;</span>
+  }
+
+  public static AddressResponse convertAddressToAddressResponse(Address address) {
+<span class="fc" id="L72">    AddressResponse addressResponse = new AddressResponse();</span>
+<span class="fc" id="L73">    addressResponse.setId(address.getId());</span>
+<span class="fc" id="L74">    addressResponse.setStreet(address.getStreet());</span>
+<span class="fc" id="L75">    addressResponse.setCity(address.getCity());</span>
+<span class="fc" id="L76">    addressResponse.setState(address.getState());</span>
+<span class="fc" id="L77">    addressResponse.setUserId(address.getUserId());</span>
+<span class="fc" id="L78">    addressResponse.setPincode(address.getPincode());</span>
+<span class="fc" id="L79">    return addressResponse;</span>
+  }
+
+  public static Address convertUpdateAddressRequestToAddress(AddressRequest request, Address existingAddress) {
+<span class="fc" id="L83">    existingAddress.setStreet(request.getStreet());</span>
+<span class="fc" id="L84">    existingAddress.setCity(request.getCity());</span>
+<span class="fc" id="L85">    existingAddress.setState(request.getState());</span>
+<span class="fc" id="L86">    existingAddress.setPincode(request.getPincode());</span>
+<span class="fc" id="L87">    return existingAddress;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

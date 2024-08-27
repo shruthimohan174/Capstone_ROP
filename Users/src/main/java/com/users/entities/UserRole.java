@@ -1,5 +1,5 @@
 package com.users.entities;
 
 public enum UserRole {
-  CUSTOMER,RESTAURANTOWNER
+  CUSTOMER, RESTAURANT_OWNER
 }

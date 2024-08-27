@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Users</a> &gt; <a href="index.source.html" class="el_package">com.users.service.impl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.users.service.impl;
+
+import com.users.constants.UserConstants;
+import com.users.dto.conversion.DtoConversion;
+import com.users.entities.User;
+import com.users.exception.InvalidCredentialsException;
+import com.users.exception.UserAlreadyExistsException;
+import com.users.exception.UserNotFoundException;
+import com.users.indto.UpdateUserRequest;
+import com.users.indto.UserLoginRequest;
+import com.users.indto.UserRequest;
+import com.users.outdto.UpdateUserResponse;
+import com.users.outdto.UserResponse;
+import com.users.repositories.UserRepository;
+import com.users.service.UserService;
+import com.users.utils.Base64Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L26">public class UserServiceImpl implements UserService {</span>
+
+<span class="fc" id="L28">  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);</span>
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Override
+  public UserResponse registerUser(UserRequest userRequest) {
+<span class="fc" id="L35">    logger.info(&quot;Registering new user with email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L36">    Optional&lt;User&gt; emailExists = userRepository.findByEmail(userRequest.getEmail());</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">    if (emailExists.isPresent()) {</span>
+<span class="fc" id="L38">      logger.error(&quot;User with email {} already exists&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L39">      throw new UserAlreadyExistsException(UserConstants.USER_ALREADY_EXISTS);</span>
+    }
+<span class="fc" id="L41">    User user = DtoConversion.convertUserRequestToUser(userRequest);</span>
+<span class="fc" id="L42">    user.setPassword(Base64Utils.encodePassword(userRequest.getPassword()));</span>
+<span class="fc" id="L43">    User savedUser = userRepository.save(user);</span>
+<span class="fc" id="L44">    logger.info(&quot;User registered successfully with ID: {}&quot;, savedUser.getId());</span>
+<span class="fc" id="L45">    return DtoConversion.convertUserToUserResponse(savedUser);</span>
+  }
+
+  @Override
+  public UserResponse loginUser(UserLoginRequest userRequest) {
+<span class="fc" id="L50">    logger.info(&quot;Login for email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L51">    Optional&lt;User&gt; user = userRepository.findByEmail(userRequest.getEmail());</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">    if (!user.isPresent() || !Base64Utils.decodePassword(user.get().getPassword()).equals(userRequest.getPassword())) {</span>
+<span class="fc" id="L53">      logger.error(&quot;Invalid credentials for email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L54">      throw new InvalidCredentialsException(UserConstants.INVALID_CREDENTIALS);</span>
+    }
+<span class="fc" id="L56">    logger.info(&quot;Login successful for email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L57">    return DtoConversion.convertUserToUserResponse(user.get());</span>
+  }
+
+  @Override
+  public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L62">    logger.info(&quot;Fetching all users&quot;);</span>
+<span class="fc" id="L63">    return userRepository.findAll();</span>
+  }
+
+  @Override
+  public User findUserById(Integer id) {
+<span class="fc" id="L68">    logger.info(&quot;Finding user by ID: {}&quot;, id);</span>
+<span class="fc" id="L69">    return userRepository.findById(id).orElseThrow(() -&gt; {</span>
+<span class="fc" id="L70">      logger.error(&quot;User not found with ID: {}&quot;, id);</span>
+<span class="fc" id="L71">      return new UserNotFoundException(UserConstants.USER_NOT_FOUND);</span>
+    });
+  }
+
+  @Override
+  public UpdateUserResponse updateUser(Integer id, UpdateUserRequest request) {
+<span class="fc" id="L77">    logger.info(&quot;Updating user with ID: {}&quot;, id);</span>
+<span class="fc" id="L78">    User existingUser = findUserById(id);</span>
+<span class="fc" id="L79">    DtoConversion.convertUpdateUserRequestToUser(existingUser, request);</span>
+<span class="fc" id="L80">    User updatedUser = userRepository.save(existingUser);</span>
+<span class="fc" id="L81">    logger.info(&quot;User updated successfully with ID: {}&quot;, updatedUser.getId());</span>
+<span class="fc" id="L82">    return DtoConversion.convertUserToUpdateUserResponse(updatedUser);</span>
+  }
+
+  @Override
+  public void deleteUser(Integer id) {
+<span class="fc" id="L87">    logger.info(&quot;Deleting user with ID: {}&quot;, id);</span>
+<span class="fc" id="L88">    User user = findUserById(id);</span>
+<span class="fc" id="L89">    userRepository.delete(user);</span>
+<span class="fc" id="L90">    logger.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L91">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
