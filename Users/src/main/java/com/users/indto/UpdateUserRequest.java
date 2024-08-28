@@ -13,6 +13,9 @@ public class UpdateUserRequest {
   private String lastName;
 
   @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits long.")
-  @Pattern(regexp = "\\d+", message = "Phone number must contain only numbers.")
+  @Pattern(
+    regexp = "^[789]\\d{9}$",
+    message = "Phone number must start with 7, 8, or 9 and be exactly 10 digits long."
+  )
   private String phoneNumber;
 }

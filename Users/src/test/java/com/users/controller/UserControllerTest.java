@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,7 +71,8 @@ public class UserControllerTest {
     userLoginRequest.setEmail("shruthimohan1708@gmail.com");
     userLoginRequest.setPassword("Pass123!");
 
-    userResponse = new UserResponse(1, "Shruthi", "Mohan", "shruthimohan1708@gmail.com", "8434972888", UserRole.RESTAURANT_OWNER,null);
+    userResponse = new UserResponse(1, "Shruthi", "Mohan", "shruthimohan1708@gmail.com",
+      "8434972888", UserRole.RESTAURANT_OWNER, null);
 
     user = new User();
     user.setId(1);
@@ -130,7 +132,8 @@ public class UserControllerTest {
     updateUserRequest.setLastName("Mohan");
     updateUserRequest.setPhoneNumber("8434972888");
 
-    UpdateUserResponse updateUserResponse = new UpdateUserResponse(1, "Shruthi", "Mohan", "8434972888");
+    UpdateUserResponse updateUserResponse = new UpdateUserResponse(1, "Shruthi", "Mohan",
+      "8434972888");
 
     when(userService.updateUser(eq(1), any(UpdateUserRequest.class))).thenReturn(updateUserResponse);
 
@@ -166,5 +169,21 @@ public class UserControllerTest {
       .andExpect(jsonPath("$.email").value("shruthimohan1708@gmail.com"))
       .andExpect(jsonPath("$.phoneNumber").value("8434972888"))
       .andExpect(jsonPath("$.userRole").value("RESTAURANT_OWNER"));
+  }
+
+  @Test
+  void updateWalletBalance() throws Exception {
+    BigDecimal amount = BigDecimal.valueOf(100);
+    UserResponse updatedUserResponse = new UserResponse(1, "Shruthi", "Mohan",
+      "shruthimohan1708@gmail.com", "8434972888", UserRole.RESTAURANT_OWNER, BigDecimal.valueOf(900.00));
+
+    when(userService.updateWalletBalance(eq(1), any(BigDecimal.class))).thenReturn(updatedUserResponse);
+
+    mockMvc.perform(put("/user/wallet/{id}", 1)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(amount)))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.walletBalance").value(900.00));
   }
 }

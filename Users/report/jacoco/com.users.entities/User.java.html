@@ -11,28 +11,34 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-<span class="pc bpc" id="L14" title="43 of 70 branches missed.">@Data</span>
+/**
+ * Entity representing a user.
+ * &lt;p&gt;
+ * This entity maps to the 'users' table in the database and holds user-related information.
+ * &lt;/p&gt;
+ */
+<span class="pc bpc" id="L20" title="43 of 70 branches missed.">@Data</span>
 @Entity
 @Table(name = &quot;users&quot;)
 public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="fc" id="L21">  private Integer id;</span>
+<span class="fc" id="L27">  private Integer id;</span>
 
-<span class="fc" id="L23">  private String firstName;</span>
+<span class="fc" id="L29">  private String firstName;</span>
 
-<span class="fc" id="L25">  private String lastName;</span>
+<span class="fc" id="L31">  private String lastName;</span>
 
-<span class="fc" id="L27">  private String email;</span>
+<span class="fc" id="L33">  private String email;</span>
 
-<span class="fc" id="L29">  private String password;</span>
+<span class="fc" id="L35">  private String password;</span>
 
-<span class="fc" id="L31">  private String phoneNumber;</span>
+<span class="fc" id="L37">  private String phoneNumber;</span>
 
-<span class="fc" id="L33">  private BigDecimal walletBalance;</span>
+<span class="fc" id="L39">  private BigDecimal walletBalance;</span>
 
   @Enumerated(EnumType.STRING)
-<span class="fc" id="L36">  private UserRole userRole;</span>
+<span class="fc" id="L42">  private UserRole userRole;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

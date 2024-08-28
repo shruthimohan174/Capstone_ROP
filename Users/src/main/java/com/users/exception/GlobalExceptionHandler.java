@@ -15,6 +15,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Global exception handler for handling various exceptions across the application.
+ * <p>
+ * This class uses Spring's {@link ControllerAdvice} to handle exceptions globally
+ * and return appropriate error responses.
+ * </p>
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -60,7 +67,13 @@ public class GlobalExceptionHandler {
   @ResponseBody
   public ErrorResponse handleAddressNotFoundException(AddressNotFoundException ex, HttpServletRequest request) {
     return new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage(), request.getRequestURI());
+  }
 
+  @ExceptionHandler(InsufficientBalanceException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public final ErrorResponse handleInsufficientBalanceException(InsufficientBalanceException ex, HttpServletRequest request) {
+    return new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
   }
 
   @Data

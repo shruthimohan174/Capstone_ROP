@@ -11,6 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+/**
+ * Entity representing a user.
+ * <p>
+ * This entity maps to the 'users' table in the database and holds user-related information.
+ * </p>
+ */
 @Data
 @Entity
 @Table(name = "users")

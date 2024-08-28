@@ -4,15 +4,31 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for setting up Cross-Origin Resource Sharing (CORS) settings.
+ * &lt;p&gt;
+ * This class configures the CORS policy to allow requests from specific origins and
+ * methods for all endpoints in the application.
+ * &lt;/p&gt;
+ */
 @Configuration
-<span class="fc" id="L8">public class CorsConfig implements WebMvcConfigurer {</span>
+<span class="fc" id="L15">public class CorsConfig implements WebMvcConfigurer {</span>
 
+  /**
+   * Configures the CORS mappings.
+   * &lt;p&gt;
+   * Allows all HTTP methods and headers, and specifies that only requests from
+   * &quot;http://localhost:3000&quot; are permitted.
+   * &lt;/p&gt;
+   *
+   * @param registry the {@link CorsRegistry} to which CORS mappings are added
+   */
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-<span class="fc" id="L12">    registry.addMapping(&quot;/**&quot;)</span>
-<span class="fc" id="L13">      .allowedOrigins(&quot;http://localhost:3000&quot;)</span>
-<span class="fc" id="L14">      .allowedMethods(&quot;*&quot;)</span>
-<span class="fc" id="L15">      .allowedHeaders(&quot;*&quot;);</span>
-<span class="fc" id="L16">  }</span>
+<span class="fc" id="L28">    registry.addMapping(&quot;/**&quot;)</span>
+<span class="fc" id="L29">      .allowedOrigins(&quot;http://localhost:3000&quot;)</span>
+<span class="fc" id="L30">      .allowedMethods(&quot;*&quot;)</span>
+<span class="fc" id="L31">      .allowedHeaders(&quot;*&quot;);</span>
+<span class="fc" id="L32">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

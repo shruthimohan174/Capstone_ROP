@@ -4,7 +4,6 @@ import com.users.entities.Address;
 import com.users.indto.AddressRequest;
 import com.users.outdto.AddressResponse;
 import com.users.service.AddressService;
-import com.users.service.impl.AddressServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,61 +20,118 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller for managing addresses.
+ * &lt;p&gt;
+ * This controller provides endpoints to add, update, delete, and retrieve addresses
+ * associated with users. It handles HTTP requests and interacts with the {@link AddressService}
+ * to perform these operations.
+ * &lt;/p&gt;
+ */
 @RestController
 @RequestMapping(&quot;/address&quot;)
-<span class="fc" id="L26">public class AddressController {</span>
+<span class="fc" id="L33">public class AddressController {</span>
 
-<span class="fc" id="L28">  private static final Logger logger = LoggerFactory.getLogger(AddressServiceImpl.class);</span>
+<span class="fc" id="L35">  private static final Logger logger = LoggerFactory.getLogger(AddressController.class);</span>
 
   @Autowired
   private AddressService addressService;
 
+  /**
+   * Adds a new address.
+   * &lt;p&gt;
+   * This endpoint receives an address request and delegates the addition operation
+   * to the {@link AddressService}. On success, it returns the address response with HTTP 201 Created.
+   * &lt;/p&gt;
+   *
+   * @param addressRequest the request body containing address details
+   * @return a {@link ResponseEntity} containing the address response and HTTP status
+   */
   @PostMapping(&quot;/add&quot;)
   public ResponseEntity&lt;AddressResponse&gt; addAddress(@RequestBody AddressRequest addressRequest) {
-<span class="fc" id="L35">    logger.info(&quot;Adding new address for user ID: {}&quot;, addressRequest.getUserId());</span>
+<span class="fc" id="L52">    logger.info(&quot;Adding new address for user ID: {}&quot;, addressRequest.getUserId());</span>
 
-<span class="fc" id="L37">    AddressResponse response = addressService.addAddress(addressRequest);</span>
-<span class="fc" id="L38">    logger.info(&quot;Address added successfully for user ID: {}&quot;, addressRequest.getUserId());</span>
+<span class="fc" id="L54">    AddressResponse response = addressService.addAddress(addressRequest);</span>
+<span class="fc" id="L55">    logger.info(&quot;Address added successfully for user ID: {}&quot;, addressRequest.getUserId());</span>
 
-<span class="fc" id="L40">    return new ResponseEntity&lt;&gt;(response, HttpStatus.CREATED);</span>
+<span class="fc" id="L57">    return new ResponseEntity&lt;&gt;(response, HttpStatus.CREATED);</span>
   }
 
+  /**
+   * Updates an existing address.
+   * &lt;p&gt;
+   * This endpoint updates an address identified by the provided ID using the details
+   * from the request body. It returns the updated address response with HTTP 200 OK on success.
+   * &lt;/p&gt;
+   *
+   * @param addressRequest the request body containing the updated address details
+   * @param id             the ID of the address to update
+   * @return a {@link ResponseEntity} containing the updated address response and HTTP status
+   */
   @PutMapping(&quot;/update/{id}&quot;)
   public ResponseEntity&lt;AddressResponse&gt; updateAddress(@RequestBody AddressRequest addressRequest, @PathVariable Integer id) {
-<span class="fc" id="L45">    logger.info(&quot;Updating address with ID: {}&quot;, id);</span>
+<span class="fc" id="L73">    logger.info(&quot;Updating address with ID: {}&quot;, id);</span>
 
-<span class="fc" id="L47">    AddressResponse response = addressService.updateAddress(id, addressRequest);</span>
-<span class="fc" id="L48">    logger.info(&quot;Address updated successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L75">    AddressResponse response = addressService.updateAddress(id, addressRequest);</span>
+<span class="fc" id="L76">    logger.info(&quot;Address updated successfully with ID: {}&quot;, id);</span>
 
-<span class="fc" id="L50">    return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</span>
+<span class="fc" id="L78">    return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</span>
   }
 
+  /**
+   * Deletes an address.
+   * &lt;p&gt;
+   * This endpoint deletes an address identified by the provided ID. It returns HTTP 204 No Content
+   * on successful deletion.
+   * &lt;/p&gt;
+   *
+   * @param id the ID of the address to delete
+   * @return a {@link ResponseEntity} with HTTP status
+   */
   @DeleteMapping(&quot;/delete/{id}&quot;)
   public ResponseEntity&lt;Void&gt; deleteAddress(@PathVariable Integer id) {
-<span class="fc" id="L55">    logger.info(&quot;Deleting address with ID: {}&quot;, id);</span>
+<span class="fc" id="L93">    logger.info(&quot;Deleting address with ID: {}&quot;, id);</span>
 
-<span class="fc" id="L57">    addressService.deleteAdderess(id);</span>
-<span class="fc" id="L58">    logger.info(&quot;Address deleted successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L95">    addressService.deleteAdderess(id);</span>
+<span class="fc" id="L96">    logger.info(&quot;Address deleted successfully with ID: {}&quot;, id);</span>
 
-<span class="fc" id="L60">    return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+<span class="fc" id="L98">    return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
   }
 
+  /**
+   * Retrieves all addresses.
+   * &lt;p&gt;
+   * This endpoint fetches all addresses and returns them in the response body with HTTP 200 OK.
+   * &lt;/p&gt;
+   *
+   * @return a {@link ResponseEntity} containing a list of addresses and HTTP status
+   */
   @GetMapping
   public ResponseEntity&lt;List&lt;Address&gt;&gt; getAllAddresses() {
-<span class="fc" id="L65">    logger.info(&quot;Fetching all addresses&quot;);</span>
+<span class="fc" id="L111">    logger.info(&quot;Fetching all addresses&quot;);</span>
 
-<span class="fc" id="L67">    List&lt;Address&gt; addressList = addressService.getAllAddress();</span>
-<span class="fc" id="L68">    return new ResponseEntity&lt;&gt;(addressList, HttpStatus.OK);</span>
+<span class="fc" id="L113">    List&lt;Address&gt; addressList = addressService.getAllAddress();</span>
+<span class="fc" id="L114">    return new ResponseEntity&lt;&gt;(addressList, HttpStatus.OK);</span>
   }
 
+  /**
+   * Finds addresses by user ID.
+   * &lt;p&gt;
+   * This endpoint retrieves addresses associated with the specified user ID and returns
+   * them in the response body with HTTP 200 OK.
+   * &lt;/p&gt;
+   *
+   * @param userId the ID of the user whose addresses are to be fetched
+   * @return a {@link ResponseEntity} containing a list of addresses and HTTP status
+   */
   @GetMapping(&quot;/user/{userId}&quot;)
   public ResponseEntity&lt;List&lt;Address&gt;&gt; findAddressesByUserId(@PathVariable Integer userId) {
-<span class="fc" id="L73">    logger.info(&quot;Fetching addresses for user ID: {}&quot;, userId);</span>
+<span class="fc" id="L129">    logger.info(&quot;Fetching addresses for user ID: {}&quot;, userId);</span>
 
-<span class="fc" id="L75">    List&lt;Address&gt; addressList = addressService.getAddressByUserId(userId);</span>
-<span class="fc" id="L76">    logger.info(&quot;Retrieved {} addresses for user ID: {}&quot;, addressList.size(), userId);</span>
+<span class="fc" id="L131">    List&lt;Address&gt; addressList = addressService.getAddressByUserId(userId);</span>
+<span class="fc" id="L132">    logger.info(&quot;Retrieved {} addresses for user ID: {}&quot;, addressList.size(), userId);</span>
 
-<span class="fc" id="L78">    return new ResponseEntity&lt;&gt;(addressList, HttpStatus.OK);</span>
+<span class="fc" id="L134">    return new ResponseEntity&lt;&gt;(addressList, HttpStatus.OK);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

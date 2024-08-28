@@ -8,7 +8,6 @@ import com.users.indto.UserRequest;
 import com.users.outdto.UpdateUserResponse;
 import com.users.outdto.UserResponse;
 import com.users.service.UserService;
-import com.users.service.impl.AddressServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,62 +23,146 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * REST controller for managing users.
+ * &lt;p&gt;
+ * This controller provides endpoints to register, login, update, delete, and fetch user details.
+ * It interacts with the {@link UserService} to perform these operations.
+ * &lt;/p&gt;
+ */
 @RestController
 @RequestMapping(&quot;/user&quot;)
-<span class="fc" id="L31">public class UserController {</span>
-<span class="fc" id="L32">  private static final Logger logger = LoggerFactory.getLogger(AddressServiceImpl.class);</span>
+<span class="fc" id="L38">public class UserController {</span>
+
+<span class="fc" id="L40">  private static final Logger logger = LoggerFactory.getLogger(UserController.class);</span>
 
   @Autowired
   private UserService userService;
 
+  /**
+   * Registers a new user.
+   * &lt;p&gt;
+   * This endpoint creates a new user based on the provided details in the request body.
+   * It returns the created user's details with HTTP 201 Created status upon successful registration.
+   * &lt;/p&gt;
+   *
+   * @param userRequest the request body containing user registration details
+   * @return a {@link ResponseEntity} containing the user response and HTTP status
+   */
   @PostMapping(&quot;/register&quot;)
   public ResponseEntity&lt;UserResponse&gt; registerUser(@Valid @RequestBody UserRequest userRequest) {
-<span class="fc" id="L39">    logger.info(&quot;Registering user with email: {}&quot;, userRequest.getEmail());</span>
-<span class="fc" id="L40">    UserResponse userResponse = userService.registerUser(userRequest);</span>
-<span class="fc" id="L41">    logger.info(&quot;User registered successfully with email: {}&quot;, userRequest.getEmail());</span>
-<span class="fc" id="L42">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.CREATED);</span>
+<span class="fc" id="L57">    logger.info(&quot;Registering user with email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L58">    UserResponse userResponse = userService.registerUser(userRequest);</span>
+<span class="fc" id="L59">    logger.info(&quot;User registered successfully with email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L60">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.CREATED);</span>
   }
 
+  /**
+   * Logs in a user.
+   * &lt;p&gt;
+   * This endpoint authenticates the user based on the provided login details in the request body.
+   * It returns the user's details with HTTP 200 OK status upon successful login.
+   * &lt;/p&gt;
+   *
+   * @param userRequest the request body containing user login details
+   * @return a {@link ResponseEntity} containing the user response and HTTP status
+   */
   @PostMapping(&quot;/login&quot;)
   public ResponseEntity&lt;UserResponse&gt; loginUser(@RequestBody UserLoginRequest userRequest) {
-<span class="fc" id="L47">    logger.info(&quot;Logging in user with email: {}&quot;, userRequest.getEmail());</span>
-<span class="fc" id="L48">    UserResponse userResponse = userService.loginUser(userRequest);</span>
-<span class="fc" id="L49">    logger.info(&quot;User logged in successfully with email: {}&quot;, userRequest.getEmail());</span>
-<span class="fc" id="L50">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L75">    logger.info(&quot;Logging in user with email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L76">    UserResponse userResponse = userService.loginUser(userRequest);</span>
+<span class="fc" id="L77">    logger.info(&quot;User logged in successfully with email: {}&quot;, userRequest.getEmail());</span>
+<span class="fc" id="L78">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
   }
 
+  /**
+   * Retrieves all users.
+   * &lt;p&gt;
+   * This endpoint fetches and returns a list of all users with HTTP 200 OK status.
+   * &lt;/p&gt;
+   *
+   * @return a {@link ResponseEntity} containing a list of users and HTTP status
+   */
   @GetMapping(&quot;&quot;)
   public ResponseEntity&lt;List&lt;User&gt;&gt; getAllUsers() {
-<span class="fc" id="L55">    logger.info(&quot;Fetching all users&quot;);</span>
-<span class="fc" id="L56">    List&lt;User&gt; userList = userService.getAllUsers();</span>
-<span class="fc" id="L57">    return new ResponseEntity&lt;&gt;(userList, HttpStatus.OK);</span>
+<span class="fc" id="L91">    logger.info(&quot;Fetching all users&quot;);</span>
+<span class="fc" id="L92">    List&lt;User&gt; userList = userService.getAllUsers();</span>
+<span class="fc" id="L93">    return new ResponseEntity&lt;&gt;(userList, HttpStatus.OK);</span>
   }
 
+  /**
+   * Updates an existing user's details.
+   * &lt;p&gt;
+   * This endpoint updates the user identified by the provided ID with the details
+   * in the request body. It returns the updated user details with HTTP 200 OK status.
+   * &lt;/p&gt;
+   *
+   * @param id      the ID of the user to update
+   * @param request the request body containing updated user details
+   * @return a {@link ResponseEntity} containing the updated user response and HTTP status
+   */
   @PutMapping(&quot;/update/{id}&quot;)
   public ResponseEntity&lt;UpdateUserResponse&gt; updateUser(@PathVariable Integer id, @Valid @RequestBody UpdateUserRequest request) {
-<span class="fc" id="L62">    logger.info(&quot;Updating user with ID: {}&quot;, id);</span>
-<span class="fc" id="L63">    UpdateUserResponse userResponse = userService.updateUser(id, request);</span>
-<span class="fc" id="L64">    logger.info(&quot;User updated successfully with ID: {}&quot;, id);</span>
-<span class="fc" id="L65">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L109">    logger.info(&quot;Updating user with ID: {}&quot;, id);</span>
+<span class="fc" id="L110">    UpdateUserResponse userResponse = userService.updateUser(id, request);</span>
+<span class="fc" id="L111">    logger.info(&quot;User updated successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L112">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
   }
 
+  /**
+   * Deletes a user.
+   * &lt;p&gt;
+   * This endpoint deletes the user identified by the provided ID. It returns HTTP 204 No Content
+   * status upon successful deletion.
+   * &lt;/p&gt;
+   *
+   * @param id the ID of the user to delete
+   * @return a {@link ResponseEntity} with HTTP status
+   */
   @DeleteMapping(&quot;/delete/{id}&quot;)
   public ResponseEntity&lt;Void&gt; deleteUser(@PathVariable Integer id) {
-<span class="fc" id="L70">    logger.info(&quot;Deleting user with ID: {}&quot;, id);</span>
-<span class="fc" id="L71">    userService.deleteUser(id);</span>
-<span class="fc" id="L72">    logger.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
-<span class="fc" id="L73">    return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+<span class="fc" id="L127">    logger.info(&quot;Deleting user with ID: {}&quot;, id);</span>
+<span class="fc" id="L128">    userService.deleteUser(id);</span>
+<span class="fc" id="L129">    logger.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L130">    return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
   }
 
+  /**
+   * Retrieves a user by ID.
+   * &lt;p&gt;
+   * This endpoint fetches user details by the provided ID and returns them in the response body with HTTP 200 OK.
+   * &lt;/p&gt;
+   *
+   * @param id the ID of the user to fetch
+   * @return a {@link ResponseEntity} containing the user response and HTTP status
+   */
   @GetMapping(&quot;/{id}&quot;)
   public ResponseEntity&lt;UserResponse&gt; getByUserId(@PathVariable Integer id) {
-<span class="fc" id="L78">    logger.info(&quot;Fetching user details with id: {}&quot;, id);</span>
-<span class="fc" id="L79">    User user = userService.findUserById(id);</span>
-<span class="fc" id="L80">    UserResponse userResponse = DtoConversion.convertUserToUserResponse(user);</span>
-<span class="fc" id="L81">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L144">    logger.info(&quot;Fetching user details with id: {}&quot;, id);</span>
+<span class="fc" id="L145">    User user = userService.findUserById(id);</span>
+<span class="fc" id="L146">    UserResponse userResponse = DtoConversion.convertUserToUserResponse(user);</span>
+<span class="fc" id="L147">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
   }
 
+  /**
+   * Updates the wallet balance of a user.
+   * &lt;p&gt;
+   * This endpoint updates the wallet balance for the user identified by the provided ID.
+   * It returns the updated user details with HTTP 200 OK status.
+   * &lt;/p&gt;
+   *
+   * @param id     the ID of the user whose wallet balance is to be updated
+   * @param amount the amount to be deducted or added to the user's wallet balance
+   * @return a {@link ResponseEntity} containing the updated user response and HTTP status
+   */
+  @PutMapping(&quot;/wallet/{id}&quot;)
+  public ResponseEntity&lt;UserResponse&gt; updateWalletBalance(@PathVariable Integer id, @RequestBody BigDecimal amount) {
+<span class="fc" id="L163">    logger.info(&quot;Deducting {} from user ID: {}&quot;, amount, id);</span>
+<span class="fc" id="L164">    UserResponse userResponse = userService.updateWalletBalance(id, amount);</span>
+<span class="fc" id="L165">    return new ResponseEntity&lt;&gt;(userResponse, HttpStatus.OK);</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

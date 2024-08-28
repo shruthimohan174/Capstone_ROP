@@ -3,6 +3,7 @@ package com.users.service.impl;
 import com.users.constants.UserConstants;
 import com.users.dto.conversion.DtoConversion;
 import com.users.entities.User;
+import com.users.exception.InsufficientBalanceException;
 import com.users.exception.InvalidCredentialsException;
 import com.users.exception.UserAlreadyExistsException;
 import com.users.exception.UserNotFoundException;
@@ -19,9 +20,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link UserService} interface.
+ * <p>
+ * This service provides methods for user registration, login, retrieval, update, deletion, and wallet balance management.
+ * </p>
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -90,4 +99,19 @@ public class UserServiceImpl implements UserService {
     logger.info("User deleted successfully with ID: {}", id);
   }
 
+  @Override
+  @Transactional
+  public UserResponse updateWalletBalance(Integer userId, BigDecimal amount) {
+    logger.info("Updating wallet balance for user ID: {}", userId);
+    User user = findUserById(userId);
+    BigDecimal currentBalance = user.getWalletBalance();
+    if (currentBalance.compareTo(amount) < 0) {
+      logger.error("Insufficient funds for user ID: {}", userId);
+      throw new InsufficientBalanceException(UserConstants.INSUFFICIENT_BALANCE);
+    }
+    user.setWalletBalance(currentBalance.subtract(amount));
+    userRepository.save(user);
+    logger.info("Wallet balance updated successfully for user ID: {}", userId);
+    return DtoConversion.convertUserToUserResponse(user);
+  }
 }

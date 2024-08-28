@@ -12,12 +12,24 @@ import javax.validation.constraints.Size;
 public class UserRequest {
 
   @NotNull(message = "First name is required")
+  @Pattern(
+    regexp = "^[a-zA-Z]+$",
+    message = "First name must contain only alphabets."
+  )
   private String firstName;
 
   @NotNull(message = "Last name is required")
+  @Pattern(
+    regexp = "^[a-zA-Z]+$",
+    message = "Last name must contain only alphabets."
+  )
   private String lastName;
 
-  @Email(message = "Invalid email format. Email should be in the format 'username@domain.com' and contain an '@' symbol")
+  @Email(message = "Invalid email format.")
+  @Pattern(
+    regexp = "^[a-zA-Z]+[a-zA-Z0-9._%+-]*@(gmail\\.com|nucleusteq\\.com)$",
+    message = "Email must be a valid, @gmail.com or @nucleusteq.com and contain at least one alphabet before the '@' symbol."
+  )
   @NotNull(message = "Email is required")
   private String email;
 
@@ -25,12 +37,15 @@ public class UserRequest {
   @Size(min = 5, message = "Password must be at least 5 characters long")
   @Pattern(
     regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{5,}$",
-    message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character"
+    message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character."
   )
   private String password;
 
   @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits long.")
-  @Pattern(regexp = "\\d+", message = "Phone number must contain only numbers.")
+  @Pattern(
+    regexp = "^[789]\\d{9}$",
+    message = "Phone number must start with 7, 8, or 9 and contain exactly 10 digits."
+  )
   private String phoneNumber;
 
   @NotNull(message = "User Role is required")

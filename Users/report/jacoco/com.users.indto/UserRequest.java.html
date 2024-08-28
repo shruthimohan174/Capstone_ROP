@@ -12,28 +12,43 @@ import javax.validation.constraints.Size;
 public class UserRequest {
 
   @NotNull(message = &quot;First name is required&quot;)
-<span class="fc" id="L15">  private String firstName;</span>
+  @Pattern(
+    regexp = &quot;^[a-zA-Z]+$&quot;,
+    message = &quot;First name must contain only alphabets.&quot;
+  )
+<span class="fc" id="L19">  private String firstName;</span>
 
   @NotNull(message = &quot;Last name is required&quot;)
-<span class="fc" id="L18">  private String lastName;</span>
+  @Pattern(
+    regexp = &quot;^[a-zA-Z]+$&quot;,
+    message = &quot;Last name must contain only alphabets.&quot;
+  )
+<span class="fc" id="L26">  private String lastName;</span>
 
-  @Email(message = &quot;Invalid email format. Email should be in the format 'username@domain.com' and contain an '@' symbol&quot;)
+  @Email(message = &quot;Invalid email format.&quot;)
+  @Pattern(
+    regexp = &quot;^[a-zA-Z]+[a-zA-Z0-9._%+-]*@(gmail\\.com|nucleusteq\\.com)$&quot;,
+    message = &quot;Email must be a valid, @gmail.com or @nucleusteq.com and contain at least one alphabet before the '@' symbol.&quot;
+  )
   @NotNull(message = &quot;Email is required&quot;)
-<span class="fc" id="L22">  private String email;</span>
+<span class="fc" id="L34">  private String email;</span>
 
   @NotNull(message = &quot;Password is required&quot;)
   @Size(min = 5, message = &quot;Password must be at least 5 characters long&quot;)
   @Pattern(
     regexp = &quot;^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=]).{5,}$&quot;,
-    message = &quot;Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character&quot;
+    message = &quot;Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character.&quot;
   )
-<span class="fc" id="L30">  private String password;</span>
+<span class="fc" id="L42">  private String password;</span>
 
   @Size(min = 10, max = 10, message = &quot;Phone number must be exactly 10 digits long.&quot;)
-  @Pattern(regexp = &quot;\\d+&quot;, message = &quot;Phone number must contain only numbers.&quot;)
-<span class="fc" id="L34">  private String phoneNumber;</span>
+  @Pattern(
+    regexp = &quot;^[789]\\d{9}$&quot;,
+    message = &quot;Phone number must start with 7, 8, or 9 and contain exactly 10 digits.&quot;
+  )
+<span class="fc" id="L49">  private String phoneNumber;</span>
 
   @NotNull(message = &quot;User Role is required&quot;)
-<span class="fc" id="L37">  private UserRole userRole;</span>
+<span class="fc" id="L52">  private UserRole userRole;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

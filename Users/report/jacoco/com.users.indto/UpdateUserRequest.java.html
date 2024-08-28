@@ -2,12 +2,21 @@
 
 import lombok.Data;
 
-<span class="pc bpc" id="L5" title="18 of 30 branches missed.">@Data</span>
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+<span class="pc bpc" id="L8" title="18 of 30 branches missed.">@Data</span>
 public class UpdateUserRequest {
-<span class="fc" id="L7">  private String firstName;</span>
 
-<span class="fc" id="L9">  private String lastName;</span>
+<span class="fc" id="L11">  private String firstName;</span>
 
-<span class="fc" id="L11">  private String phoneNumber;</span>
+<span class="fc" id="L13">  private String lastName;</span>
+
+  @Size(min = 10, max = 10, message = &quot;Phone number must be exactly 10 digits long.&quot;)
+  @Pattern(
+    regexp = &quot;^[789]\\d{9}$&quot;,
+    message = &quot;Phone number must start with 7, 8, or 9 and be exactly 10 digits long.&quot;
+  )
+<span class="fc" id="L20">  private String phoneNumber;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -7,6 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Entity representing an address.
+ * <p>
+ * This entity maps to the 'Address' table in the database and holds address-related information
+ * for users.
+ * </p>
+ */
 @Data
 @Entity
 public class Address {

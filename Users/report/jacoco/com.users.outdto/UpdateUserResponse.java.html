@@ -4,16 +4,33 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<span class="pc bpc" id="L7" title="23 of 38 branches missed.">@Data</span>
-<span class="fc" id="L8">@AllArgsConstructor</span>
-<span class="fc" id="L9">@NoArgsConstructor</span>
+/**
+ * Response DTO for updating user information.
+ * Contains basic information about a user.
+ */
+<span class="pc bpc" id="L11" title="23 of 38 branches missed.">@Data</span>
+<span class="fc" id="L12">@AllArgsConstructor</span>
+<span class="fc" id="L13">@NoArgsConstructor</span>
 public class UpdateUserResponse {
-<span class="fc" id="L11">  private Integer id;</span>
 
-<span class="fc" id="L13">  private String firstName;</span>
+  /**
+   * Unique identifier for the user.
+   */
+<span class="fc" id="L19">  private Integer id;</span>
 
-<span class="fc" id="L15">  private String lastName;</span>
+  /**
+   * First name of the user.
+   */
+<span class="fc" id="L24">  private String firstName;</span>
 
-<span class="fc" id="L17">  private String phoneNumber;</span>
+  /**
+   * Last name of the user.
+   */
+<span class="fc" id="L29">  private String lastName;</span>
+
+  /**
+   * Phone number of the user.
+   */
+<span class="fc" id="L34">  private String phoneNumber;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -5,19 +5,50 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<span class="pc bpc" id="L8" title="32 of 54 branches missed.">@Data</span>
-<span class="fc" id="L9">@AllArgsConstructor</span>
-<span class="fc" id="L10">@NoArgsConstructor</span>
+import java.math.BigDecimal;
+
+/**
+ * Response DTO for user information.
+ * Contains detailed information about a user.
+ */
+<span class="pc bpc" id="L14" title="37 of 62 branches missed.">@Data</span>
+<span class="fc" id="L15">@AllArgsConstructor</span>
+<span class="fc" id="L16">@NoArgsConstructor</span>
 public class UserResponse {
-<span class="fc" id="L12">  private Integer id;</span>
-<span class="fc" id="L13">  private String firstName;</span>
 
-<span class="fc" id="L15">  private String lastName;</span>
+  /**
+   * Unique identifier for the user.
+   */
+<span class="fc" id="L22">  private Integer id;</span>
 
-<span class="fc" id="L17">  private String email;</span>
+  /**
+   * First name of the user.
+   */
+<span class="fc" id="L27">  private String firstName;</span>
 
-<span class="fc" id="L19">  private String phoneNumber;</span>
+  /**
+   * Last name of the user.
+   */
+<span class="fc" id="L32">  private String lastName;</span>
 
-<span class="fc" id="L21">  private UserRole userRole;</span>
+  /**
+   * Email address of the user.
+   */
+<span class="fc" id="L37">  private String email;</span>
+
+  /**
+   * Phone number of the user.
+   */
+<span class="fc" id="L42">  private String phoneNumber;</span>
+
+  /**
+   * Role of the user within the application.
+   */
+<span class="fc" id="L47">  private UserRole userRole;</span>
+
+  /**
+   * Wallet balance of the user.
+   */
+<span class="fc" id="L52">  private BigDecimal walletBalance;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

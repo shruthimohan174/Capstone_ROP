@@ -15,6 +15,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link AddressService} interface.
+ * <p>
+ * This service provides methods for managing addresses and interacting with the underlying
+ * data repository.
+ * </p>
+ */
 @Service
 public class AddressServiceImpl implements AddressService {
   private static final Logger logger = LoggerFactory.getLogger(AddressServiceImpl.class);
@@ -34,7 +41,6 @@ public class AddressServiceImpl implements AddressService {
   @Override
   public List<Address> getAllAddress() {
     logger.info("Fetching all addresses");
-
     return addressRepository.findAll();
   }
 
@@ -47,29 +53,24 @@ public class AddressServiceImpl implements AddressService {
   @Override
   public AddressResponse updateAddress(Integer id, AddressRequest request) {
     logger.info("Updating address with ID: {}", id);
-
     Address existingAddress = findAddressById(id);
     DtoConversion.convertUpdateAddressRequestToAddress(request, existingAddress);
     Address updatedAddress = addressRepository.save(existingAddress);
     logger.info("Address updated successfully with ID: {}", updatedAddress.getId());
-
     return DtoConversion.convertAddressToAddressResponse(updatedAddress);
   }
 
   @Override
   public void deleteAdderess(Integer id) {
     logger.info("Deleting address with ID: {}", id);
-
     Address address = findAddressById(id);
     addressRepository.delete(address);
     logger.info("Address deleted successfully with ID: {}", id);
-
   }
 
   @Override
   public Address findAddressById(Integer id) {
     logger.info("Finding address by ID: {}", id);
-
     return addressRepository.findById(id)
       .orElseThrow(() -> {
         logger.error("Address not found with ID: {}", id);

@@ -2,6 +2,7 @@ package com.users.service;
 
 import com.users.entities.User;
 import com.users.entities.UserRole;
+import com.users.exception.InsufficientBalanceException;
 import com.users.exception.InvalidCredentialsException;
 import com.users.exception.UserAlreadyExistsException;
 import com.users.exception.UserNotFoundException;
@@ -21,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -197,4 +199,48 @@ public class UserServiceImplTest {
       userService.deleteUser(1);
     });
   }
+
+  @Test
+  void updateWalletBalanceSuccessTest() {
+    User user = new User();
+    user.setId(1);
+    user.setWalletBalance(new BigDecimal("100.00"));
+
+    when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
+    BigDecimal amountToDeduct = new BigDecimal("50.00");
+    UserResponse response = userService.updateWalletBalance(1, amountToDeduct);
+    assertEquals(new BigDecimal("50.00"), response.getWalletBalance());
+  }
+
+  @Test
+  void updateWalletBalanceInsufficientFundsTest() {
+    user.setWalletBalance(new BigDecimal("30.00"));
+
+    when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
+
+    BigDecimal amountToDeduct = new BigDecimal("50.00");
+
+    // Act & Assert
+    assertThrows(InsufficientBalanceException.class, () -> {
+      userService.updateWalletBalance(1, amountToDeduct);
+    });
+
+    verify(userRepository, times(0)).save(any(User.class)); // Save should not be called
+  }
+
+  @Test
+  void updateWalletBalanceUserNotFoundTest() {
+    // Arrange
+    when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+    BigDecimal amountToDeduct = new BigDecimal("50.00");
+
+    // Act & Assert
+    assertThrows(UserNotFoundException.class, () -> {
+      userService.updateWalletBalance(1, amountToDeduct);
+    });
+
+    verify(userRepository, times(0)).save(any(User.class)); // Save should not be called
+  }
 }
+
